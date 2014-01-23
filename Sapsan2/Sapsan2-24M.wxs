@@ -1,0 +1,161 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Wix
+	xmlns="http://wixtoolset.org/schemas/v4/wxs"
+>
+
+	<?include Sapsan2.wxi?>
+
+	<Fragment>
+
+		<?define AppShortName="Сапсан 2-24M"?>
+		<?define AppInternalName="SAPSAN2_24M"?>
+		<?define AppDirectory="$(var.AppInternalName)"?>
+		<?define AppDirectoryName="$(var.AppShortName)"?>
+		<?define AppDescription="Сапсан 2-24М для проведения поверки, испытаний и контроля метрологических характеристик измерителей скорости, имеющих рабочую частоту 24.5-24.25 ГГц."?>
+		<!--<?define AppFileName="$(var.AppInternalName).exe"?>-->
+		<?define AppFileName="StendP.exe"?>
+		<?define AppIcon="Product.ico"?>
+		<?define AppFileNameAliases="$(var.AppFileName)"?>
+
+		<?define AppRegKey="$(var.ProductRegKey)"?>
+
+		<?define AppProgId="$(var.ProductProgIdPrefix).$(var.ProductProgIdPostfix)"?>
+		<?define AppProgIdDescription="Файл продукта &quot;$(var.AppShortName)&quot;"?>
+
+		<Feature
+			Id="$(var.AppInternalName)"
+			Level="100"
+			Absent="allow"
+			Display="2"
+			AllowAdvertise="yes"
+			InstallDefault="local"
+			TypicalDefault="install"
+			Title="$(var.AppShortName)"
+			Description="$(var.AppDescription)"
+			ConfigurableDirectory="$(var.AppDirectory)"
+		>
+			<ComponentGroupRef Id="$(var.AppInternalName)Components" Primary="yes"/>
+		</Feature>
+
+		<DirectoryRef Id="APPLICATIONFOLDER">
+			<Directory
+				Id="$(var.AppDirectory)"
+				Name="$(var.AppDirectoryName)"
+				ComponentGuidGenerationSeed="{2DAFAF8A-F32B-4F67-B261-66A8A32FE7A3}"
+			/>
+		</DirectoryRef>
+
+		<?define AppFiles=protocol.lst;marcodex.ico;olv.bmp;olv.ico;pp.bmp;start.bmp;stop.bmp;yy.bmp?>
+		<?define BmpResIds=1;2;3;4;5;6;7;8;9;10;11;12;13;14;15;16;17;18;19;20;21;22;23;24;25;26;27;28;29;30;31;32;33;34;35;36;37;38;39;40;41;42;43;44;45;46;47;48;49;50;51;52;53;54;55;56;57;58;59;60;61;62;63;64;65;66;67;68;69;70;71;72;73;74?>
+
+		<ComponentGroup Id="$(var.AppInternalName)Components">
+			<ComponentRef	Id="$(var.AppInternalName)" Primary="yes"/>
+			<ComponentRef Id="$(var.AppInternalName).AppReg"/>
+			<ComponentRef Id="$(var.AppInternalName).SetInst24.dat"/>
+		</ComponentGroup>
+
+		<DirectoryRef Id="$(var.AppDirectory)" FileSource=".\SourceDir\ProgramFiles\$(var.AppDirectoryName)">
+
+			<Component
+				Id="$(var.AppInternalName)"
+				Guid="{D8068A8C-ED06-4062-BE53-0BABDD62C2CA}"
+				Location="either"
+			>
+				<File
+					Name="$(var.AppFileName)"
+					KeyPath="yes"
+					Vital="yes"
+					Checksum="yes"
+				>
+					<?foreach ShFolder in $(var.ShFolders)?>
+					<Shortcut
+						Id="$(var.AppInternalName).Shortcut.$(var.ShFolder)"
+						Directory="$(var.ShFolder)"
+						Name="$(var.AppShortName)"
+						Description="$(var.AppDescription)"
+						WorkingDirectory="$(var.AppDirectory)"
+						Show="normal"
+						Icon="$(var.AppIcon)"
+						Advertise="yes"
+					>
+						<!--<ShortcutProperty Key="System.AppUserModel.ID" Value="$(var.AppProgId)"/>-->
+					</Shortcut>
+					<?endforeach?>
+				</File>
+				<?foreach ShFolder in $(var.ShFolders)?>
+				<RemoveFolder
+					Id="$(var.AppInternalName).ShFolder.$(var.ShFolder)"
+					Directory="$(var.ShFolder)"
+					On="uninstall"
+				/>
+				<?endforeach?>
+				<?foreach AppFile in $(var.AppFiles)?>
+				<File
+					Name="$(var.AppFile)"
+					CompanionFile="$(var.AppFileName)"
+				/>
+				<?endforeach?>
+				<?foreach BmpId in $(var.BmpResIds)?>
+				<File
+					Name="pit$(var.BmpId).bmp"
+					CompanionFile="$(var.AppFileName)"
+				/>
+				<?endforeach?>
+			</Component>
+
+			<Component
+				Id="$(var.AppInternalName).SetInst24.dat"
+				Guid="{E76F1F1F-DE7E-4A87-9C62-17F4ABA3B508}"
+				Location="either"
+			>
+				<File
+					Name="setinst24.dat"
+					KeyPath="yes"
+					Vital="yes"
+				/>
+			</Component>
+
+			<Component
+				Id="$(var.AppInternalName).AppReg"
+			>
+				<!-- http://msdn.microsoft.com/ru-RU/library/windows/desktop/ee872121(v=vs.85).aspx -->
+				<RegistryKey
+					Root="HKMU"
+					Key="SOFTWARE\Microsoft\Windows\CurrentVersion\App Paths"
+				>
+					<?foreach AppFileNameAlias in $(var.AppFileNameAliases)?>
+					<RegistryKey Key="$(var.AppFileNameAlias)">
+						<RegistryValue Type="string" Value="[#$(var.AppFileName)]" />
+					</RegistryKey>
+					<?endforeach?>
+				</RegistryKey>
+				<RegistryKey
+					Root="HKCR"
+					Key="Applications"
+				>
+					<RegistryKey Key="$(var.AppFileName)">
+						<RegistryValue Type="string" Value="[#$(var.AppFileName)]" />
+						<RegistryValue Name="FriendlyAppName" Type="string" Value="$(var.AppShortName)" />
+						<RegistryValue Name="NoOpenWith" Type="integer" Value="0" />
+					</RegistryKey>
+				</RegistryKey>
+				<RegistryKey
+					Root="HKMU"
+					Key="SOFTWARE\RegisteredApplications"
+				>
+					<RegistryValue Name="$(var.AppProgId)" Type="string" Value="$(var.AppRegKey)\Capabilities" />
+				</RegistryKey>
+				<RegistryKey
+					Root="HKMU"
+					Key="$(var.AppRegKey)\Capabilities"
+				>
+					<RegistryValue Name="ApplicationName" Type="string" Value="$(var.AppShortName)" KeyPath="yes" />
+					<RegistryValue Name="ApplicationDescription" Type="string" Value="$(var.AppDescription)" />
+					<RegistryValue Name="Hidden" Type="integer" Value="0" />
+				</RegistryKey>
+			</Component>
+
+		</DirectoryRef>
+
+	</Fragment>
+</Wix>

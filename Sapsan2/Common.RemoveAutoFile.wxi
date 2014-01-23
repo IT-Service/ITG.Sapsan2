@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Include
+	xmlns="http://wixtoolset.org/schemas/v4/wxs"
+>
+
+	<?ifndef AppFileExt?>
+		<?define AppFileExt=$(var.ProductExt)?>
+	<?endif?>
+
+	<Component
+		Id="common.RemoveProgId.$(var.AppFileExt)_auto_file"
+	>
+		<RegistryKey
+			Root="HKCU"
+			Key="SOFTWARE\Classes\.$(var.AppFileExt)"
+		>
+			<RegistryValue Name="AutoProgIdRemoved" Type="integer" Value="1" KeyPath="yes" />
+		</RegistryKey>
+		<RemoveRegistryKey
+			Root="HKCU"
+			Key="SOFTWARE\Classes\.$(var.AppFileExt)\OpenWithProgids"
+			Action="removeOnInstall"
+		/>
+		<RemoveRegistryKey
+			Root="HKCU"
+			Key="SOFTWARE\Classes\$(var.AppFileExt)_auto_file"
+			Action="removeOnInstall"
+		/>
+		<RemoveRegistryKey
+			Root="HKCU"
+			Key="SOFTWARE\Microsoft\Windows\CurrentVersion\Explorer\FileExts\.$(var.AppFileExt)"
+			Action="removeOnInstall"
+		/>
+	</Component>
+
+</Include>

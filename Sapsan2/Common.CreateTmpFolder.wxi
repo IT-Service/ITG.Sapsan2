@@ -1,0 +1,133 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Include
+	xmlns="http://wixtoolset.org/schemas/v4/wxs"
+>
+
+	<DirectoryRef Id="$(var.AppDirectory)">
+		<Directory Id="$(var.AppTempDirId)" Name="$(var.AppTempDir)" />
+	</DirectoryRef>
+		
+	<?ifdef AppTempVolumeIcon?>
+		<!-- дополнительные операции по определению пути к файлу иконки из таблицы Icon -->
+		<PropertyRef Id="DATABASEDIR"/>
+		<?define AppTempVolumeIconPath="[DATABASEDIR][ProductCode]\$(var.AppTempVolumeIcon)"?>
+	<?endif?>
+
+	<?ifndef AppTempDirCleanerStateFlags?>
+		<?define AppTempDirCleanerStateFlags="1"?>
+	<?endif?>
+
+	<ComponentGroup Id="$(var.AppTempDirId)Components">
+
+		<?ifdef AppTempDirCreate?>
+		<Component
+			Id="$(var.AppTempDirId)CreateDir"
+			Guid="$(var.AppTempDirCompId1)"
+			Directory="$(var.AppTempDirId)"
+			Location="local"
+		>
+			<CreateFolder>
+				<?ifdef AppTempDirSddl?>
+				<!-- PermissionEx требует MSI 5.0, но поддерживает Well Known SIDs, и не будет проблем с локализацией групп -->
+				<!-- SDDL: http://msdn.microsoft.com/en-us/library/windows/desktop/aa379570.aspx -->
+				<PermissionEx Sddl="$(var.AppTempDirSddl)"/>
+				<?endif?>
+			</CreateFolder>
+			<RemoveFolder
+				Id="$(var.AppTempDirId)"
+				On="uninstall"
+			/>
+			<RemoveFile
+				Id="$(var.AppTempDirId)Files"
+				Name="*.*"
+				On="both"
+			/>
+		</Component>
+		<?endif?>
+
+		<!-- регистрация папки временных файлов в мастере очистки диска -->
+		<!-- http://msdn.microsoft.com/en-us/library/bb776782.aspx#registering_with_disk_cleanup -->
+
+		<Component
+			Id="$(var.AppTempDirId)RegDirToCleanupMaster_x64"
+			Guid="$(var.AppTempDirCompId2)"
+			Directory="$(var.AppTempDirId)"
+			Location="local"
+			Win64="yes"
+		>
+			<Condition><![CDATA[VersionNT64]]></Condition>
+
+			<RegistryKey
+				Root="HKLM"
+				Key="SOFTWARE\Microsoft\Windows\CurrentVersion\Explorer\VolumeCaches\$(var.AppTempVolumeId)"
+				ForceDeleteOnUninstall="yes"
+			>
+				<RegistryValue Type="string" Value="$(var.AppTempDirCleanerCLSID)" KeyPath="yes"/>
+				<RegistryValue Name="Display" Type="string" Value="$(var.AppTempVolumeDisplayName)"/>
+				<RegistryValue Name="Description" Type="string" Value="$(var.AppTempVolumeDescription)"/>
+				<?ifdef AppTempVolumeIconPath?>
+				<RegistryValue Name="IconPath" Type="string" Value="$(var.AppTempVolumeIconPath)"/>
+				<?endif?>
+				<RegistryValue Name="Flags" Type="integer" Value="$(var.AppTempDirCleanerFlags)"/>
+				<RegistryValue Name="StateFlags" Type="integer" Value="$(var.AppTempDirCleanerStateFlags)"/>
+				<RegistryValue Name="Priority" Type="integer" Value="$(var.AppTempDirCleanerPriority)"/>
+				<?ifdef AppTempDirCleanerLastAccess?>
+				<RegistryValue Name="LastAccess" Type="integer" Value="$(var.AppTempDirCleanerLastAccess)"/>
+				<?endif?>
+				<?ifdef AppTempDirCSIDL?>
+				<RegistryValue Name="CSIDL" Type="integer" Value="$(var.AppTempDirCSIDL)"/>
+				<?endif?>
+				<RegistryValue Name="Folder" Type="multiString" Action="append">
+					<MultiStringValue>$(var.AppTempDirPath)</MultiStringValue>
+				</RegistryValue>
+				<RegistryValue Name="FileList" Type="multiString" Action="append">
+					<MultiStringValue>$(var.AppTempDirMask)</MultiStringValue>
+				</RegistryValue>
+			</RegistryKey>
+		</Component>
+
+		<?if $(sys.BUILDARCH) = "x86"?>
+
+		<Component
+			Id="$(var.AppTempDirId)RegDirToCleanupMaster_x86"
+			Guid="$(var.AppTempDirCompId3)"
+			Directory="$(var.AppTempDirId)"
+			Location="local"
+			Win64="no"
+		>
+			<Condition><![CDATA[NOT VersionNT64]]></Condition>
+
+			<RegistryKey
+				Root="HKLM"
+				Key="SOFTWARE\Microsoft\Windows\CurrentVersion\Explorer\VolumeCaches\$(var.AppTempVolumeId)"
+				ForceDeleteOnUninstall="yes"
+			>
+				<RegistryValue Type="string" Value="$(var.AppTempDirCleanerCLSID)" KeyPath="yes"/>
+				<RegistryValue Name="Display" Type="string" Value="$(var.AppTempVolumeDisplayName)"/>
+				<RegistryValue Name="Description" Type="string" Value="$(var.AppTempVolumeDescription)"/>
+				<?ifdef AppTempVolumeIconPath?>
+				<RegistryValue Name="IconPath" Type="string" Value="$(var.AppTempVolumeIconPath)"/>
+				<?endif?>
+				<RegistryValue Name="Flags" Type="integer" Value="$(var.AppTempDirCleanerFlags)"/>
+				<RegistryValue Name="StateFlags" Type="integer" Value="$(var.AppTempDirCleanerStateFlags)"/>
+				<RegistryValue Name="Priority" Type="integer" Value="$(var.AppTempDirCleanerPriority)"/>
+				<?ifdef AppTempDirCleanerLastAccess?>
+				<RegistryValue Name="LastAccess" Type="integer" Value="$(var.AppTempDirCleanerLastAccess)"/>
+				<?endif?>
+				<?ifdef AppTempDirCSIDL?>
+				<RegistryValue Name="CSIDL" Type="integer" Value="$(var.AppTempDirCSIDL)"/>
+				<?endif?>
+				<RegistryValue Name="Folder" Type="multiString" Action="append">
+					<MultiStringValue>$(var.AppTempDirPath)</MultiStringValue>
+				</RegistryValue>
+				<RegistryValue Name="FileList" Type="multiString" Action="append">
+					<MultiStringValue>$(var.AppTempDirMask)</MultiStringValue>
+				</RegistryValue>
+			</RegistryKey>
+		</Component>
+
+		<?endif?>
+
+	</ComponentGroup>
+
+</Include>

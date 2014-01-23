@@ -1,0 +1,25 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio 2012
+Project("{930C7802-8A8C-48F9-8165-68863BCCD9DD}") = "Sapsan2", "Sapsan2\Sapsan2.wixproj", "{EADCF984-3482-4E3C-9AD5-F0E3A3451E18}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{8742F81D-0248-4D33-89B4-BFA9DD17D139}"
+	ProjectSection(SolutionItems) = preProject
+		readme.md = readme.md
+	EndProjectSection
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Admin image|x86 = Admin image|x86
+		Single .msi file|x86 = Single .msi file|x86
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{EADCF984-3482-4E3C-9AD5-F0E3A3451E18}.Admin image|x86.ActiveCfg = Admin image|x86
+		{EADCF984-3482-4E3C-9AD5-F0E3A3451E18}.Admin image|x86.Build.0 = Admin image|x86
+		{EADCF984-3482-4E3C-9AD5-F0E3A3451E18}.Single .msi file|x86.ActiveCfg = Single .msi file|x86
+		{EADCF984-3482-4E3C-9AD5-F0E3A3451E18}.Single .msi file|x86.Build.0 = Single .msi file|x86
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+EndGlobal

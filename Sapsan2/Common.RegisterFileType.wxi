@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Include
+	xmlns="http://wixtoolset.org/schemas/v4/wxs"
+>
+
+	<ProgId
+		Id="$(var.AppProgId)"
+		Description="$(var.AppProgIdDescription)"
+		Icon="$(var.AppIcon)"
+		Advertise="yes"
+	>
+		<ProgId
+			Id="$(var.AppVersionIndependentProgId)"
+			Description="$(var.AppProgIdDescription)"
+		/>
+		<Extension
+			Id="$(var.AppFileExt)"
+			Advertise="yes" 
+		>
+			<MIME
+				ContentType="$(var.AppContentType)"
+				Default="yes"
+				Advertise="yes"
+			/>
+			<Verb
+				Id="open"
+				Argument='"%1"'
+			/>
+		</Extension>
+	</ProgId>
+
+</Include>

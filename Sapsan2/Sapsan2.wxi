@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Include
+	xmlns="http://wixtoolset.org/schemas/v4/wxs"
+>
+
+	<?define ProductMajorVersion="1"?>
+	<?define ProductMinorVersion="0"?>
+	<!--<?define ProductVersion="$(fun.AutoVersion($(var.ProductMajorVersion).$(var.ProductMinorVersion)))"?>-->
+	<?define ProductVersion="01.00.0000.0000"?>
+	<?define ProductShortName="Сапсан 2"?>
+	<?define ProductInternalName="Sapsan2"?>
+	<?define ProductDescription="Стенд автоматизированный для испытаний и поверки радиолокационных измерителей скорости Сапсан 2."?>
+	<?define ProductName="$(var.ProductShortName) v$(var.ProductVersion)"?>
+	<?define ProductCode="{1866F6D8-3D16-49EC-86A3-68035497D3BD}"?>
+	<?define UpgradeCode="{F2C00D25-CE56-41D1-8F56-11799CE3B564}"?>
+	<?define Manufacturer="Ольвия"?>
+	<?define ManufacturerId="Olvia"?>
+	
+	<?define ProductId="$(var.ManufacturerId).$(var.ProductInternalName).$(var.ProductMajorVersion).$(var.ProductMinorVersion)"?>
+	<?define ProductRegKey="SOFTWARE\$(var.Manufacturer)\$(var.ProductShortName)\$(var.ProductMajorVersion).$(var.ProductMinorVersion)"?>
+	<?define ProductProgIdPrefix="$(var.ManufacturerId).$(var.ProductInternalName)"?>
+	<?define ProductProgIdPostfix="$(var.ProductMajorVersion).$(var.ProductMinorVersion)"?>
+	<?define ProductProgId="$(var.ProductProgIdPrefix).$(var.ProductProgIdPostfix)"?>
+	<?define ProductProgIdDescription="Файл $(var.ProductShortName)"?>
+	<?define AppContentTypePrefix="application/vnd.olvia-sapsan2"?>
+
+	<?ifdef SingleMSIFile ?>
+	<?define Compressed="yes" ?>
+	<?define IsAdminImage="no" ?>
+	<?else?>
+	<?define Compressed="no" ?>
+	<?define IsAdminImage="no" ?>
+	<?endif?>
+
+	<?if $(sys.BUILDARCH) = "x86" ?>
+	<?define PlatformPostfix="32" ?>
+	<?define SystemFolderId="SystemFolder" ?>
+	<?define SystemFolder="System32" ?>
+	<?define ProgramFilesFolderId="ProgramFilesFolder" ?>
+	<?define Win64="no" ?>
+	<?else?>
+	<?define PlatformPostfix="64" ?>
+	<?define SystemFolderId="System64Folder" ?>
+	<?define SystemFolder="System64" ?>
+	<?define ProgramFilesFolderId="ProgramFiles64Folder" ?>
+	<?define Win64="yes" ?>
+
+	<?error "Platform must be x86" ?>
+	<?endif?>
+
+	<?define ProductSettingsKey="$(var.Manufacturer)\$(var.ProductShortName)\$(var.ProductMajorVersion).$(var.ProductMinorVersion)" ?>
+
+	<?define ShFolders=PRODUCTMENUFOLDER;PRODUCTDESKTOPFOLDER?>
+
+</Include>
