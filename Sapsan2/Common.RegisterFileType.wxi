@@ -9,10 +9,12 @@
 		Icon="$(var.AppIcon)"
 		Advertise="yes"
 	>
+		<?ifdef $(var.AppVersionIndependentProgId)?>
 		<ProgId
 			Id="$(var.AppVersionIndependentProgId)"
 			Description="$(var.AppProgIdDescription)"
 		/>
+		<?endif?>
 		<Extension
 			Id="$(var.AppFileExt)"
 			Advertise="yes" 
