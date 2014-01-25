@@ -29,6 +29,8 @@
 		<?define AppProgIdDescription="Файл продукта &quot;$(var.AppShortName)&quot;"?>
 		<?define AppContentType="$(var.AppContentTypePrefix)-$(var.AppFileExt).document"?>
 
+		<?define AddProgIds=rhlfile;prtfile?>
+
 		<Feature
 			Id="$(var.AppInternalName)"
 			Level="1"
@@ -62,7 +64,9 @@
 			<ComponentRef Id="$(var.AppInternalName).Shell.VerbsFlags"/>
 			<ComponentRef Id="$(var.AppInternalName).Shell.New.$(var.AppFileExt)"/>
 			<ComponentRef Id="common.RemoveProgId.$(var.AppFileExt)_auto_file"/>
-			<ComponentRef	Id="$(var.AppInternalName).rhlfile"/>
+			<?foreach ProgId in AddProgIds?>
+			<ComponentRef Id="$(var.AppInternalName).$(var.ProgId)"/>
+			<?endforeach?>
 		</ComponentGroup>
 
 		<DirectoryRef Id="$(var.AppDirectory)" FileSource=".\SourceDir\ProgramFiles\$(var.AppDirectoryName)">
@@ -130,18 +134,19 @@
 				/>
 			</Component>
 
+			<?foreach ProgId in AddProgIds?>
 			<Component
-				Id="$(var.AppInternalName).rhlfile"
-				Guid="{0512C669-C219-4C7E-B468-598D1EF66AEE}"
+				Id="$(var.AppInternalName).$(var.ProgId)"
 				Location="either"
 			>
 				<!-- указанный ниже ProgId создаю только для того, чтобы предоставить приложению права на его изменение -->
 				<RegistryKey
 					Root="HKCR"
-					Key="rhlfile"
+					Key="$(var.ProgId)"
 					ForceCreateOnInstall="yes"
 					ForceDeleteOnUninstall="yes"
 				>
+					<RegistryValue Type="string" Value="Вспомогательное ProgId для продукта $(var.ProductName)"/>
 					<RegistryValue Name="NoOpenWith" Type="string" Value=""/>
 					<PermissionEx Sddl="D:AI(A;CI;KA;;;BU)(A;;KR;;;BU)(A;CIIO;GR;;;BU)(A;;KA;;;BA)(A;CIIO;GA;;;BA)(A;;KA;;;SY)(A;CIIO;GA;;;SY)(A;CIIO;GA;;;CO)(A;;KR;;;AC)(A;CIIO;GR;;;AC)"/>
 					<RegistryKey
@@ -151,6 +156,7 @@
 					</RegistryKey>
 				</RegistryKey>
 			</Component>
+			<?endforeach?>
 
 		</DirectoryRef>
 
