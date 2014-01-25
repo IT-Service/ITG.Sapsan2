@@ -7,10 +7,14 @@
 
 	<Fragment>
 
+		<?define AppVersion="$(var.ProductVersion)"?>
+		<?define AppMajorVersion="$(var.ProductMajorVersion)"?>
+		<?define AppMinorVersion="$(var.ProductMinorVersion)"?>
 		<?define AppShortName="Сапсан 2-24M"?>
-		<?define AppInternalName="SAPSAN2_24M"?>
+		<?define AppInternalName="M24"?>
 		<?define AppDirectory="$(var.AppInternalName)"?>
-		<?define AppDirectoryName="$(var.AppShortName)"?>
+		<!--<?define AppDirectoryName="$(var.AppDirectory)"?>-->
+		<?define AppDirectoryName="24M"?>
 		<?define AppDescription="Сапсан 2-24М для проведения поверки, испытаний и контроля метрологических характеристик измерителей скорости, имеющих рабочую частоту 24.50-24.55 ГГц."?>
 		<!--<?define AppFileName="$(var.AppInternalName).exe"?>-->
 		<?define AppFileName="StendP.exe"?>
@@ -19,12 +23,15 @@
 
 		<?define AppRegKey="$(var.ProductRegKey)"?>
 
-		<?define AppProgId="$(var.ProductProgIdPrefix).$(var.ProductProgIdPostfix)"?>
+		<?define AppFileExt=rhl?>
+		<!--<?define AppVersionIndependentProgId="$(var.ProductProgIdPrefix).$(var.AppInternalName)"?>-->
+		<?define AppProgId="$(var.ProductProgIdPrefix).$(var.AppInternalName).$(var.AppMajorVersion).$(var.AppMinorVersion)"?>
 		<?define AppProgIdDescription="Файл продукта &quot;$(var.AppShortName)&quot;"?>
+		<?define AppContentType="$(var.AppContentTypePrefix)-$(var.AppFileExt).document"?>
 
 		<Feature
 			Id="$(var.AppInternalName)"
-			Level="100"
+			Level="1"
 			Absent="allow"
 			Display="2"
 			AllowAdvertise="yes"
@@ -50,8 +57,12 @@
 
 		<ComponentGroup Id="$(var.AppInternalName)Components">
 			<ComponentRef	Id="$(var.AppInternalName)" Primary="yes"/>
-			<ComponentRef Id="$(var.AppInternalName).AppReg"/>
 			<ComponentRef Id="$(var.AppInternalName).SetInst24.dat"/>
+			<ComponentRef Id="$(var.AppInternalName).AppReg"/>
+			<ComponentRef Id="$(var.AppInternalName).Shell.VerbsFlags"/>
+			<ComponentRef Id="$(var.AppInternalName).Shell.New.$(var.AppFileExt)"/>
+			<ComponentRef Id="common.RemoveProgId.$(var.AppFileExt)_auto_file"/>
+			<ComponentRef	Id="$(var.AppInternalName).rhlfile"/>
 		</ComponentGroup>
 
 		<DirectoryRef Id="$(var.AppDirectory)" FileSource=".\SourceDir\ProgramFiles\$(var.AppDirectoryName)">
@@ -82,6 +93,7 @@
 					</Shortcut>
 					<?endforeach?>
 				</File>
+				<?include Common.RegisterFileType.wxi?>
 				<?foreach ShFolder in $(var.ShFolders)?>
 				<RemoveFolder
 					Id="$(var.AppInternalName).ShFolder.$(var.ShFolder)"
@@ -103,6 +115,9 @@
 				<?endforeach?>
 			</Component>
 
+			<?include Common.RegisterFileType2.wxi?>
+			<?include Common.RemoveAutoFile.wxi ?>
+
 			<Component
 				Id="$(var.AppInternalName).SetInst24.dat"
 				Guid="{E76F1F1F-DE7E-4A87-9C62-17F4ABA3B508}"
@@ -116,42 +131,24 @@
 			</Component>
 
 			<Component
-				Id="$(var.AppInternalName).AppReg"
+				Id="$(var.AppInternalName).rhlfile"
+				Guid="{0512C669-C219-4C7E-B468-598D1EF66AEE}"
+				Location="either"
 			>
-				<!-- http://msdn.microsoft.com/ru-RU/library/windows/desktop/ee872121(v=vs.85).aspx -->
-				<RegistryKey
-					Root="HKMU"
-					Key="SOFTWARE\Microsoft\Windows\CurrentVersion\App Paths"
-				>
-					<?foreach AppFileNameAlias in $(var.AppFileNameAliases)?>
-					<RegistryKey Key="$(var.AppFileNameAlias)">
-						<RegistryValue Type="string" Value="[#$(var.AppFileName)]" />
-					</RegistryKey>
-					<?endforeach?>
-				</RegistryKey>
+				<!-- указанный ниже ProgId создаю только для того, чтобы предоставить приложению права на его изменение -->
 				<RegistryKey
 					Root="HKCR"
-					Key="Applications"
+					Key="rhlfile"
+					ForceCreateOnInstall="yes"
+					ForceDeleteOnUninstall="yes"
 				>
-					<RegistryKey Key="$(var.AppFileName)">
-						<RegistryValue Type="string" Value="[#$(var.AppFileName)]" />
-						<RegistryValue Name="FriendlyAppName" Type="string" Value="$(var.AppShortName)" />
-						<RegistryValue Name="NoOpenWith" Type="integer" Value="0" />
+					<RegistryValue Name="NoOpenWith" Type="string" Value=""/>
+					<PermissionEx Sddl="D:AI(A;CI;KA;;;BU)(A;;KR;;;BU)(A;CIIO;GR;;;BU)(A;;KA;;;BA)(A;CIIO;GA;;;BA)(A;;KA;;;SY)(A;CIIO;GA;;;SY)(A;CIIO;GA;;;CO)(A;;KR;;;AC)(A;CIIO;GR;;;AC)"/>
+					<RegistryKey
+						Key="DefaultIcon"
+					>
+						<RegistryValue Type="string" Value="" KeyPath="yes"/>
 					</RegistryKey>
-				</RegistryKey>
-				<RegistryKey
-					Root="HKMU"
-					Key="SOFTWARE\RegisteredApplications"
-				>
-					<RegistryValue Name="$(var.AppProgId)" Type="string" Value="$(var.AppRegKey)\Capabilities" />
-				</RegistryKey>
-				<RegistryKey
-					Root="HKMU"
-					Key="$(var.AppRegKey)\Capabilities"
-				>
-					<RegistryValue Name="ApplicationName" Type="string" Value="$(var.AppShortName)" KeyPath="yes" />
-					<RegistryValue Name="ApplicationDescription" Type="string" Value="$(var.AppDescription)" />
-					<RegistryValue Name="Hidden" Type="integer" Value="0" />
 				</RegistryKey>
 			</Component>
 
