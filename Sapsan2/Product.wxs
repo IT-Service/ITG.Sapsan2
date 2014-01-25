@@ -29,7 +29,7 @@
 			Keywords="Installer, $(var.ProductShortName)"
 		/>
 
-		<FeatureRef Id="SAPSAN2_24M" />
+		<FeatureRef Id="M24" />
 
 		<Upgrade Id="$(var.UpgradeCode)">
 			<UpgradeVersion
@@ -89,7 +89,7 @@
 
 		<Property Id="MSIRESTARTMANAGERCONTROL" Value="Disable"/>
 		
-		<Property Id="INSTALLLEVEL" Value="100"/>
+		<Property Id="INSTALLLEVEL" Value="3"/>
 
 		<MediaTemplate EmbedCab="$(var.Compressed)"/>
 
