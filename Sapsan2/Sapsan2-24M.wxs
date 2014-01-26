@@ -63,10 +63,11 @@
 			<ComponentRef Id="$(var.AppInternalName).AppReg"/>
 			<ComponentRef Id="$(var.AppInternalName).Shell.VerbsFlags"/>
 			<ComponentRef Id="$(var.AppInternalName).Shell.New.$(var.AppFileExt)"/>
-			<ComponentRef Id="common.RemoveProgId.$(var.AppFileExt)_auto_file"/>
-			<?foreach ProgId in AddProgIds?>
+			<?foreach ProgId in $(var.AddProgIds)?>
 			<ComponentRef Id="$(var.AppInternalName).$(var.ProgId)"/>
 			<?endforeach?>
+			<ComponentRef Id="common.RemoveProgId.$(var.AppFileExt)_auto_file"/>
+			<ComponentRef Id="common.RemoveProgId.prt_auto_file"/>
 		</ComponentGroup>
 
 		<DirectoryRef Id="$(var.AppDirectory)" FileSource=".\SourceDir\ProgramFiles\$(var.AppDirectoryName)">
@@ -97,7 +98,6 @@
 					</Shortcut>
 					<?endforeach?>
 				</File>
-				<?include Common.RegisterFileType.wxi?>
 				<?foreach ShFolder in $(var.ShFolders)?>
 				<RemoveFolder
 					Id="$(var.AppInternalName).ShFolder.$(var.ShFolder)"
@@ -117,10 +117,207 @@
 					CompanionFile="$(var.AppFileName)"
 				/>
 				<?endforeach?>
+				<ProgId
+					Id="$(var.AppProgId)"
+					Description="$(var.AppProgIdDescription)"
+					Icon="$(var.AppIcon)"
+					Advertise="yes"
+	>
+					<?ifdef $(var.AppVersionIndependentProgId)?>
+					<ProgId
+						Id="$(var.AppVersionIndependentProgId)"
+						Description="$(var.AppProgIdDescription)"
+					/>
+					<?endif?>
+					<Extension
+						Id="$(var.AppFileExt)"
+						Advertise="yes"
+					>
+						<MIME
+							ContentType="$(var.AppContentType)"
+							Default="yes"
+							Advertise="yes"
+						/>
+						<Verb
+							Id="open"
+							Argument='"%1"'
+						/>
+					</Extension>
+					<Extension
+						Id="prt"
+						Advertise="yes"
+					>
+						<MIME
+							ContentType="$(var.AppContentTypePrefix)-prt.document"
+							Default="yes"
+							Advertise="yes"
+						/>
+						<Verb
+							Id="open"
+							Argument='"%1"'
+						/>
+					</Extension>
+				</ProgId>
 			</Component>
 
-			<?include Common.RegisterFileType2.wxi?>
+			<Component
+				Id="$(var.AppInternalName).AppReg"
+			>
+				<!-- http://msdn.microsoft.com/ru-RU/library/windows/desktop/ee872121(v=vs.85).aspx -->
+				<RegistryKey
+					Root="HKMU"
+					Key="SOFTWARE\Microsoft\Windows\CurrentVersion\App Paths"
+				>
+					<?foreach AppFileNameAlias in $(var.AppFileNameAliases)?>
+					<RegistryKey Key="$(var.AppFileNameAlias)">
+						<RegistryValue Type="string" Value="[#$(var.AppFileName)]" />
+					</RegistryKey>
+					<?endforeach?>
+				</RegistryKey>
+				<RegistryKey
+					Root="HKCR"
+					Key="Applications"
+				>
+					<RegistryKey Key="$(var.AppFileName)">
+						<RegistryValue Type="string" Value="[#$(var.AppFileName)]" />
+						<RegistryValue Name="FriendlyAppName" Type="string" Value="$(var.AppShortName)" />
+						<RegistryValue Name="NoOpenWith" Type="integer" Value="0" />
+						<RegistryKey Key="SupportedTypes">
+							<RegistryValue Name=".$(var.AppFileExt)" Type="string" Value="" />
+							<RegistryValue Name=".prt" Type="string" Value="" />
+						</RegistryKey>
+					</RegistryKey>
+				</RegistryKey>
+				<RegistryKey
+					Root="HKMU"
+					Key="SOFTWARE\RegisteredApplications"
+				>
+					<RegistryValue Name="$(var.AppProgId)" Type="string" Value="$(var.AppRegKey)\Capabilities" />
+				</RegistryKey>
+				<RegistryKey
+					Root="HKMU"
+					Key="$(var.AppRegKey)\Capabilities"
+				>
+					<RegistryValue Name="ApplicationName" Type="string" Value="$(var.AppShortName)" KeyPath="yes" />
+					<RegistryValue Name="ApplicationDescription" Type="string" Value="$(var.AppDescription)" />
+					<RegistryValue Name="Hidden" Type="integer" Value="0" />
+					<RegistryKey Key="FileAssociations">
+						<RegistryValue Name=".$(var.AppFileExt)" Type="string" Value="$(var.AppProgId)" />
+						<RegistryValue Name=".prt" Type="string" Value="$(var.AppProgId)" />
+					</RegistryKey>
+					<RegistryKey Key="MIMEAssociations">
+						<RegistryValue Name="$(var.AppContentType)" Type="string" Value="$(var.AppProgId)" />
+						<RegistryValue Name="$(var.AppContentTypePrefix)-prt.document" Type="string" Value="$(var.AppProgId)" />
+					</RegistryKey>
+				</RegistryKey>
+				<RegistryKey
+					Root="HKMU"
+					Key="SOFTWARE\Microsoft\Windows\CurrentVersion\Explorer\KindMap"
+				>
+					<RegistryValue Name=".$(var.AppFileExt)" Type="string" Value="Document" />
+					<RegistryValue Name=".prt" Type="string" Value="Document" />
+				</RegistryKey>
+			</Component>
+
+			<Component
+				Id="$(var.AppInternalName).Shell.VerbsFlags"
+			>
+				<RegistryKey
+					Root="HKCR"
+					Key="$(var.AppProgId)"
+				>
+					<!-- http://msdn.microsoft.com/en-us/library/windows/desktop/bb762506(v=vs.85).aspx -->
+					<!-- FTA_HasExtension(0x4) + FTA_NoEdit(0x8) + FTA_NoRemove(x10) + FTA_NoNewVerb(x20) + FTA_NoEditVerb(x40)
+						+ FTA_NoRemoveVerb(x80) + FTA_NoEditDesc(x100) + FTA_NoEditIcon(x200) + FTA_NoEditDflt(x400)
+						+ FTA_NoEditVerbCmd(x800) + FTA_NoEditVerbExe(x1000) + FTA_NoDDE(x2000) + FTA_NoEditMIME(x4000)
+						+ FTA_OpenIsSafe(0x00010000) + !FTA_AlwaysUnsafe(0x00020000) + 
+						+ !FTA_NoRecentDocs(0x00100000) + !FTA_SafeForElevation(0x00200000) + !FTA_AlwaysUseDirectInvoke(0x00400000) -->
+					<RegistryValue Name="EditFlags" Type="integer" Value="98300" KeyPath="yes" />
+
+					<!-- http://msdn.microsoft.com/en-us/library/windows/desktop/bb986055.aspx#MSDNMag2001Nov -->
+					<!--!!! http://windowssucks.wordpress.com/file-type-registration/ -->
+					<!--<RegistryValue Name="InfoTip" Type="string" Value="" />-->
+					<!--<RegistryValue Name="TileInfo" Type="string" Value="" />-->
+					<!--<RegistryValue Name="NoOpen" Type="string" Value="Сообщение для NoOpen диалога" />-->
+					<RegistryValue Name="NoOpenWith" Type="string" Value="" />
+					<!--<RegistryValue Name="NoPreviousVersions" Type="string" Value="" />-->
+					<!--<RegistryValue Name="NoJumpListPathTooltip" Type="string" Value="" />-->
+					<!--<RegistryValue Name="NoRecentDocs" Type="string" Value="" />-->
+					<!--<RegistryValue Name="NeverShowExt" Type="string" Value="" />-->
+					<!--<RegistryValue Name="NoSendTo" Type="string" Value="" />-->
+					<!--<RegistryValue Name="DownloadInvokeDisabled" Type="string" Value="" />-->
+					<!-- http://msdn.microsoft.com/en-us/library/windows/desktop/cc144152#fa_attributes -->
+					<!--<RegistryValue Name="AllowSilentDefaultTakeOver" Type="string" Value="" />-->
+					<RegistryValue Name="AppUserModelID " Type="string" Value="$(var.AppProgId)" />
+
+					<!-- http://msdn.microsoft.com/en-us/library/windows/desktop/hh127468 -->
+					<!--<RegistryValue Name="ContentViewModeForBrowse " Type="string" Value="" />-->
+
+					<RegistryKey Key="shell">
+						<RegistryKey Key="open">
+							<!-- http://msdn.microsoft.com/en-us/library/windows/desktop/cc144171#dynamic_behavior -->
+							<RegistryValue Name="MultiSelectModel" Type="string" Value="Document"/>
+						</RegistryKey>
+					</RegistryKey>
+				</RegistryKey>
+			</Component>
+
+			<!--<Component
+				Id="$(var.AppInternalName).Shell.New.$(var.AppFileExt).template"
+			>
+				<File
+					Name="template.$(var.AppFileExt)"
+					KeyPath="yes"
+					Vital="no"
+				/>
+			</Component>-->
+			<Component
+				Id="$(var.AppInternalName).Shell.New.$(var.AppFileExt)"
+			>
+				<RegistryKey
+					Root="HKCR"
+					Key=".$(var.AppFileExt)"
+				>
+					<RegistryKey Key="$(var.AppProgId)">
+						<RegistryKey Key="ShellNew">
+							<!-- http://msdn.microsoft.com/en-us/library/windows/desktop/cc144101(v=vs.85).aspx -->
+							<RegistryValue Name="NullFile" Type="string" Value="" KeyPath="yes" />
+							<!--<RegistryValue Name="FileName" Type="string" Value="[#template.$(var.AppFileExt)]" KeyPath="yes" />-->
+							<RegistryKey Key="Config">
+								<RegistryValue Name="AllDrives" Type="string" Value="" />
+							</RegistryKey>
+						</RegistryKey>
+					</RegistryKey>
+				</RegistryKey>
+			</Component>
+
 			<?include Common.RemoveAutoFile.wxi ?>
+
+			<Component
+				Id="common.RemoveProgId.prt_auto_file"
+			>
+				<RegistryKey
+					Root="HKCU"
+					Key="SOFTWARE\Classes\.prt"
+				>
+					<RegistryValue Name="AutoProgIdRemoved" Type="integer" Value="1" KeyPath="yes" />
+				</RegistryKey>
+				<RemoveRegistryKey
+					Root="HKCU"
+					Key="SOFTWARE\Classes\.prt\OpenWithProgids"
+					Action="removeOnInstall"
+				/>
+				<RemoveRegistryKey
+					Root="HKCU"
+					Key="SOFTWARE\Classes\prt_auto_file"
+					Action="removeOnInstall"
+				/>
+				<RemoveRegistryKey
+					Root="HKCU"
+					Key="SOFTWARE\Microsoft\Windows\CurrentVersion\Explorer\FileExts\.prt"
+					Action="removeOnInstall"
+				/>
+			</Component>
 
 			<Component
 				Id="$(var.AppInternalName).SetInst24.dat"
@@ -134,7 +331,7 @@
 				/>
 			</Component>
 
-			<?foreach ProgId in AddProgIds?>
+			<?foreach ProgId in $(var.AddProgIds)?>
 			<Component
 				Id="$(var.AppInternalName).$(var.ProgId)"
 				Location="either"
