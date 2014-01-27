@@ -42,10 +42,7 @@
     <Folder Include="SourceDir\System32" />
   </ItemGroup>
   <ItemGroup>
-    <Content Include="Common.RegisterFileType2.wxi" />
     <Content Include="Common.CreateTmpFolder.wxi" />
-    <Content Include="Common.RegisterFileType.wxi" />
-    <Content Include="Common.RemoveAutoFile.wxi" />
     <Content Include="Icons\marcodex.ico" />
     <Content Include="Sapsan2.wxi" />
     <Content Include="Icons\help.ico" />
