@@ -221,7 +221,7 @@
 					</RegistryKey>
 					<RegistryKey Key="MIMEAssociations">
 						<RegistryValue Name="$(var.AppContentType)" Type="string" Value="$(var.AppProgId)" />
-						<RegistryValue Name="$(var.AppContentTypePrefix)-prt.document" Type="string" Value="$(var.AppProgId)" />
+						<RegistryValue Name="$(var.AppContentTypePrefix)-prt.document" Type="string" Value="prtfile" />
 					</RegistryKey>
 				</RegistryKey>
 				<RegistryKey
