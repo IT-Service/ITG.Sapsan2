@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Wix
+	xmlns="http://wixtoolset.org/schemas/v4/wxs"
+>
+
+	<?include Sapsan2.wxi?>
+
+	<?define OldPackageId="M10"?>
+	<?define OldPackageUninstallerId="Сапсан 2-10_is1"?>
+
+	<Fragment>
+
+		<?include Common.UninstallOldPackage.wxi?>
+
+	</Fragment>
+
+</Wix>

@@ -1,0 +1,73 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Include
+	xmlns="http://wixtoolset.org/schemas/v4/wxs"
+>
+
+	<?ifndef OldPackageProperty?>
+	<?define OldPackageProperty="ORIGINAL$(var.OldPackageId)PACKAGEUNINSTALLER"?>
+	<?endif?>
+	<?ifndef OldPackageUninstallAction?>
+	<?define OldPackageUninstallAction="UninstallOriginal$(var.OldPackageId)Package"?>
+	<?endif?>
+	<?ifndef OldPackageUninstallerArgs?>
+	<?define OldPackageUninstallerArgs="/SILENT /NORESTART /SUPPRESSMSGBOXES /LOG"?>
+	<?endif?>
+	<?ifndef OldPackageUninstallerFileName?>
+	<?define OldPackageUninstallerFileName="unins000.exe"?>
+	<?endif?>
+
+	<Property Id="$(var.OldPackageProperty)">
+		<?ifdef OldPackageUninstallerFileName?>
+			<RegistrySearch
+				Id="Original$(var.OldPackageId)PackageUninstaller"
+				Root="HKLM"
+				Key="SOFTWARE\Microsoft\Windows\CurrentVersion\Uninstall\$(var.OldPackageUninstallerId)"
+				Name="UninstallString"
+				Type="file"
+			>
+				<FileSearch Name="$(var.OldPackageUninstallerFileName)"/>
+			</RegistrySearch>
+		<?else?>
+			<RegistrySearch
+				Id="Original$(var.OldPackageId)PackageUninstaller"
+				Root="HKLM"
+				Key="SOFTWARE\Microsoft\Windows\CurrentVersion\Uninstall\$(var.OldPackageUninstallerId)"
+				Name="UninstallString"
+				Type="raw"
+			>
+			</RegistrySearch>
+		<?endif?>
+	</Property>
+
+	<CustomAction
+		Id="$(var.OldPackageUninstallAction)"
+		Property="$(var.OldPackageProperty)"
+		ExeCommand="$(var.OldPackageUninstallerArgs)"
+		Impersonate="no"
+		Execute="deferred"
+		Return="check"
+	/>
+
+	<InstallExecuteSequence>
+		<Custom
+			Action="$(var.OldPackageUninstallAction)"
+			After="InstallInitialize"
+		><![CDATA[$(var.OldPackageProperty) AND NOT REMOVE]]></Custom>
+	</InstallExecuteSequence>
+
+	<!--<Property Id="ORIGINAL(var.OldPackageId)PACKAGEDIR">
+		<RegistrySearch
+			Id="Original(var.OldPackageId)PackageDir"
+			Root="HKLM"
+			Key="SOFTWARE\Microsoft\Windows\CurrentVersion\Uninstall\(var.OldPackageUninstallerId)"
+			Name="Inno Setup: App Path"
+			Type="directory"
+		>
+			<DirectorySearch
+				Id="Original(var.OldPackageId)PackageDir"
+				AssignToProperty="yes"
+			/>
+		</RegistrySearch>
+	</Property>-->
+
+</Include>

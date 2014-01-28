@@ -29,6 +29,8 @@
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Single .msi file|x86' ">
   </PropertyGroup>
   <ItemGroup>
+    <Compile Include="UnistallOriginalPackageM10.wxs" />
+    <Compile Include="UnistallOriginalPackageM24.wxs" />
     <Compile Include="Sapsan2prtFileType.wxs" />
     <Compile Include="Sapsan2-10M.wxs" />
     <Compile Include="Sapsan2CommonFiles.wxs" />
@@ -49,6 +51,7 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include="Common.CreateTmpFolder.wxi" />
+    <Content Include="Common.UninstallOldPackage.wxi" />
     <Content Include="Icons\marcodex.ico" />
     <Content Include="Sapsan2.wxi" />
     <Content Include="Icons\help.ico" />

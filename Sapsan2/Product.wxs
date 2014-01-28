@@ -55,6 +55,9 @@
 			</RemoveExistingProducts>
 		</InstallExecuteSequence>
 
+		<CustomActionRef Id="UninstallOriginalM10Package"/>
+		<CustomActionRef Id="UninstallOriginalM24Package"/>
+
 		<Property Id="ARPREADME" Value="$(var.ProductRepositoryURL)/blob/master/readme.md"/>
 		<Property Id="ARPCOMMENTS" Value="$(var.ProductDescription)"/>
 		<Property Id="ARPURLINFOABOUT" Value="$(var.ProductRepositoryURL)/blob/master/readme.md"/>
@@ -78,7 +81,7 @@
 
 		<Property Id="PRIMARYFOLDER" Value="APPLICATIONFOLDER" />
 		<SetProperty Id="ARPINSTALLLOCATION" Value="[APPLICATIONFOLDER]" Sequence="execute" Before="InstallInitialize">
-			<![CDATA[Installed]]>
+			<![CDATA[NOT Installed]]>
 		</SetProperty>
 		<Property Id="APPLICATIONFOLDER" Admin="yes" />
 
