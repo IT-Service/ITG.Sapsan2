@@ -55,11 +55,11 @@
 			</RemoveExistingProducts>
 		</InstallExecuteSequence>
 
-		<Property Id="ARPREADME" Value="https://github.com/IT-Service/ITG.$(var.ProductInternalName)/blob/master/readme.md"/>
+		<Property Id="ARPREADME" Value="$(var.ProductRepositoryURL)/blob/master/readme.md"/>
 		<Property Id="ARPCOMMENTS" Value="$(var.ProductDescription)"/>
-		<Property Id="ARPURLINFOABOUT" Value="http://github.com/IT-Service/ITG.$(var.ProductInternalName)/blob/master/readme.md"/>
-		<Property Id="ARPURLUPDATEINFO" Value="http://github.com/IT-Service/ITG.$(var.ProductInternalName)/releases"/>
-		<Property Id="ARPHELPLINK" Value="http://github.com/IT-Service/ITG.$(var.ProductInternalName)/wiki"/>
+		<Property Id="ARPURLINFOABOUT" Value="$(var.ProductRepositoryURL)/blob/master/readme.md"/>
+		<Property Id="ARPURLUPDATEINFO" Value="$(var.ProductRepositoryURL)/releases"/>
+		<Property Id="ARPHELPLINK" Value="$(var.ProductRepositoryURL)/wiki"/>
 		<Property Id="ARPCONTACT" Value="ИТ-Сервис"/>
 
 		<?ifdef AdminImage ?>

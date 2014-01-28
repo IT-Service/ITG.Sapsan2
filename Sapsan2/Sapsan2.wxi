@@ -24,6 +24,8 @@
 	<?define ProductProgIdDescription="Файл $(var.ProductShortName)"?>
 	<?define AppContentTypePrefix="application/vnd.olvia-sapsan2"?>
 
+	<?define ProductRepositoryURL="https://github.com/Metrolog/ITG.$(var.ProductInternalName)"?>
+
 	<?ifdef SingleMSIFile ?>
 	<?define Compressed="yes" ?>
 	<?define IsAdminImage="no" ?>
