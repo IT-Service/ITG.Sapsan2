@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Wix
+	xmlns="http://wixtoolset.org/schemas/v4/wxs"
+>
+
+	<?include Sapsan2.wxi?>
+
+	<?define AppFiles=protocol.lst;marcodex.ico;olv.bmp;olv.ico;pp.bmp;start.bmp;stop.bmp;yy.bmp?>
+
+	<Fragment>
+
+		<ComponentGroup Id="$(var.ProductInternalName)CommonFiles">
+			<?foreach AppFile in $(var.AppFiles)?>
+			<Component
+				Id="$(var.AppFile)"
+				Directory="APPLICATIONFOLDER"
+				Location="either"
+			>
+				<File
+					Name="$(var.AppFile)"
+					KeyPath="yes"
+					Vital="no"
+					Source=".\SourceDir\ProgramFiles\$(var.AppFile)"
+				/>
+			</Component>
+			<?endforeach?>
+		</ComponentGroup>
+
+	</Fragment>
+</Wix>

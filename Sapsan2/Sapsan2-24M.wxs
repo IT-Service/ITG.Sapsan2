@@ -47,14 +47,13 @@
 			<ComponentGroupRef Id="$(var.AppInternalName)Components" Primary="yes"/>
 		</Feature>
 
-		<?define AppFiles=protocol.lst;marcodex.ico;olv.bmp;olv.ico;pp.bmp;start.bmp;stop.bmp;yy.bmp?>
-
 		<ComponentGroup Id="$(var.AppInternalName)Components">
 			<ComponentRef	Id="$(var.AppInternalName)" Primary="yes"/>
 			<ComponentRef Id="$(var.AppInternalName).SetInst24.dat"/>
 			<?foreach FileExt in $(var.AppFileExts)?>
 			<ComponentRef Id="common.RemoveProgId.$(var.FileExt)_auto_file"/>
 			<?endforeach?>
+			<ComponentGroupRef Id="$(var.ProductInternalName)CommonFiles"/>
 			<ComponentGroupRef Id="$(var.ProductInternalName)Pictures"/>
 		</ComponentGroup>
 
@@ -92,12 +91,6 @@
 					Id="$(var.AppInternalName).ShFolder.$(var.ShFolder)"
 					Directory="$(var.ShFolder)"
 					On="uninstall"
-				/>
-				<?endforeach?>
-				<?foreach AppFile in $(var.AppFiles)?>
-				<File
-					Name="$(var.AppFile)"
-					CompanionFile="$(var.AppFileName)"
 				/>
 				<?endforeach?>
 				<ProgId

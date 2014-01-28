@@ -29,6 +29,7 @@
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Single .msi file|x86' ">
   </PropertyGroup>
   <ItemGroup>
+    <Compile Include="Sapsan2CommonFiles.wxs" />
     <Compile Include="Pictures.wxs" />
     <Compile Include="Sapsan2-24M.wxs" />
     <Compile Include="Common.DatabaseDir.wxs" />
