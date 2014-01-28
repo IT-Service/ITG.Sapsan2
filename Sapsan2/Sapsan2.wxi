@@ -6,7 +6,7 @@
 	<?define ProductMajorVersion="1"?>
 	<?define ProductMinorVersion="0"?>
 	<!--<?define ProductVersion="$(fun.AutoVersion($(var.ProductMajorVersion).$(var.ProductMinorVersion)))"?>-->
-	<?define ProductVersion="01.00.0000.0000"?>
+	<?define ProductVersion="01.00.0001.0000"?>
 	<?define ProductShortName="Сапсан 2"?>
 	<?define ProductInternalName="Sapsan2"?>
 	<?define ProductDescription="Стенд автоматизированный для испытаний и поверки радиолокационных измерителей скорости Сапсан 2."?>

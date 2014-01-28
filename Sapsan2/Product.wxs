@@ -39,10 +39,12 @@
 				Property="WIX_DOWNGRADE_DETECTED"
 			/>
 			<UpgradeVersion
+				Minimum="1.0.0"
+				IncludeMinimum="yes"
 				Maximum="$(var.ProductVersion)"
 				IncludeMaximum="no"
-				RemoveFeatures="ALL"
-				Property="WIX_UPGRADE_DETECTED"
+				RemoveFeatures=" "
+				Property="WIX_MINOR_UPGRADE_DETECTED"
 				MigrateFeatures="yes"
 				IgnoreRemoveFailure="no"
 			/>
