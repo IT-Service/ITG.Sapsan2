@@ -7,9 +7,9 @@
 
 	<Fragment>
 
-		<?define AppVersion="$(var.ProductVersion)"?>
-		<?define AppMajorVersion="$(var.ProductMajorVersion)"?>
-		<?define AppMinorVersion="$(var.ProductMinorVersion)"?>
+		<?define AppVersion="01.00.0000.0000"?>
+		<?define AppMajorVersion="2"?>
+		<?define AppMinorVersion="0"?>
 		<?define AppShortName="Сапсан 2-24M"?>
 		<?define AppInternalName="M24"?>
 		<?define AppDirectory="$(var.AppInternalName)"?>
@@ -17,7 +17,7 @@
 		<?define AppDirectoryName="24M"?>
 		<?define AppDescription="Сапсан 2-24М для проведения поверки, испытаний и контроля метрологических характеристик измерителей скорости, имеющих рабочую частоту 24.50-24.55 ГГц."?>
 		<!--<?define AppFileName="$(var.AppInternalName).exe"?>-->
-		<?define AppFileName="StendP.exe"?>
+		<?define AppFileName="Stend.exe"?>
 		<?define AppIcon="Product.ico"?>
 		<?define AppFileNameAliases="$(var.AppFileName)"?>
 
@@ -29,7 +29,7 @@
 		<!--<?define AppProgId="$(var.ProductProgIdPrefix).$(var.AppInternalName).$(var.AppMajorVersion).$(var.AppMinorVersion)"?>-->
 		<?define AppProgId="rhlfile"?>
 		<?define AppProgIds=rhlfile;prtfile?>
-		<?define AppProgIdDescription='Файл продукта "$(var.AppShortName)"'?>
+		<?define AppProgIdDescription='Шаблон протокола поверки измерителей скорости"'?>
 		<?define AppContentType="$(var.AppContentTypePrefix)-$(var.AppFileExt).document"?>
 
 		<?define AppRegKeySddl="D:AI(A;CI;KA;;;BU)(A;;KR;;;BU)(A;CIIO;GR;;;BU)(A;;KA;;;BA)(A;CIIO;GA;;;BA)(A;;KA;;;SY)(A;CIIO;GA;;;SY)(A;CIIO;GA;;;CO)(A;;KR;;;AC)(A;CIIO;GR;;;AC)"?>
@@ -145,7 +145,7 @@
 				</ProgId>
 				<ProgId
 					Id="prtfile"
-					Description="$(var.AppProgIdDescription)"
+					Description="Протокол поверки измерителей скорости"
 					Icon="$(var.AppIcon)"
 					Advertise="yes"
 				>
