@@ -31,7 +31,6 @@
   <ItemGroup>
     <Compile Include="Sapsan2prtFileType.wxs" />
     <Compile Include="Sapsan2-10M.wxs" />
-    <Compile Include="Sapsan2rhlFileType.wxs" />
     <Compile Include="Sapsan2CommonFiles.wxs" />
     <Compile Include="Pictures.wxs" />
     <Compile Include="Sapsan2-24M.wxs" />
