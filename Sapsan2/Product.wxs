@@ -99,7 +99,7 @@
 					<Directory Id="ProductProgramFolder" Name="$(var.ProductInternalName)">
 						<Directory Id="ProductVersionProgramFolder" Name="$(var.ProductMajorVersion).$(var.ProductMinorVersion)">
 							<Directory Id="APPLICATIONFOLDER"
-								ComponentGuidGenerationSeed="{92250D49-7DC4-4467-94D0-9D5CAEE93EE7}"
+								ComponentGuidGenerationSeed="{2DAFAF8A-F32B-4F67-B261-66A8A32FE7A3}"
 							>
 							</Directory>
 						</Directory>

@@ -12,9 +12,7 @@
 		<?define AppMinorVersion="0"?>
 		<?define AppShortName="Сапсан 2-24M"?>
 		<?define AppInternalName="M24"?>
-		<?define AppDirectory="$(var.AppInternalName)"?>
-		<!--<?define AppDirectoryName="$(var.AppDirectory)"?>-->
-		<?define AppDirectoryName="24M"?>
+		<?define AppDirectory="APPLICATIONFOLDER"?>
 		<?define AppDescription="Сапсан 2-24М для проведения поверки, испытаний и контроля метрологических характеристик измерителей скорости, имеющих рабочую частоту 24.50-24.55 ГГц."?>
 		<!--<?define AppFileName="$(var.AppInternalName).exe"?>-->
 		<?define AppFileName="Sapsan2_24M.exe"?>
@@ -49,16 +47,7 @@
 			<ComponentGroupRef Id="$(var.AppInternalName)Components" Primary="yes"/>
 		</Feature>
 
-		<DirectoryRef Id="APPLICATIONFOLDER">
-			<Directory
-				Id="$(var.AppDirectory)"
-				Name="$(var.AppDirectoryName)"
-				ComponentGuidGenerationSeed="{2DAFAF8A-F32B-4F67-B261-66A8A32FE7A3}"
-			/>
-		</DirectoryRef>
-
 		<?define AppFiles=protocol.lst;marcodex.ico;olv.bmp;olv.ico;pp.bmp;start.bmp;stop.bmp;yy.bmp?>
-		<?define BmpResIds=1;2;3;4;5;6;7;8;9;10;11;12;13;14;15;16;17;18;19;20;21;22;23;24;25;26;27;28;29;30;31;32;33;34;35;36;37;38;39;40;41;42;43;44;45;46;47;48;49;50;51;52;53;54;55;56;57;58;59;60;61;62;63;64;65;66;67;68;69;70;71;72;73;74?>
 
 		<ComponentGroup Id="$(var.AppInternalName)Components">
 			<ComponentRef	Id="$(var.AppInternalName)" Primary="yes"/>
@@ -66,9 +55,10 @@
 			<?foreach FileExt in $(var.AppFileExts)?>
 			<ComponentRef Id="common.RemoveProgId.$(var.FileExt)_auto_file"/>
 			<?endforeach?>
+			<ComponentGroupRef Id="$(var.ProductInternalName)Pictures"/>
 		</ComponentGroup>
 
-		<DirectoryRef Id="$(var.AppDirectory)" FileSource=".\SourceDir\ProgramFiles\$(var.AppDirectoryName)">
+		<DirectoryRef Id="$(var.AppDirectory)" FileSource=".\SourceDir\ProgramFiles">
 
 			<Component
 				Id="$(var.AppInternalName)"
@@ -78,6 +68,7 @@
 				<File
 					Name="$(var.AppFileName)"
 					KeyPath="yes"
+					Source=".\SourceDir\ProgramFiles\$(var.AppInternalName)\Stend.exe"
 					Vital="yes"
 					Checksum="yes"
 				>
@@ -106,12 +97,6 @@
 				<?foreach AppFile in $(var.AppFiles)?>
 				<File
 					Name="$(var.AppFile)"
-					CompanionFile="$(var.AppFileName)"
-				/>
-				<?endforeach?>
-				<?foreach BmpId in $(var.BmpResIds)?>
-				<File
-					Name="pit$(var.BmpId).bmp"
 					CompanionFile="$(var.AppFileName)"
 				/>
 				<?endforeach?>
@@ -347,6 +332,7 @@
 			>
 				<File
 					Name="setinst24.dat"
+					Source=".\SourceDir\ProgramFiles\$(var.AppInternalName)\setinst24.dat"
 					KeyPath="yes"
 					Vital="yes"
 				/>
