@@ -10,12 +10,12 @@
 		<?define AppVersion="01.00.0000.0000"?>
 		<?define AppMajorVersion="2"?>
 		<?define AppMinorVersion="0"?>
-		<?define AppShortName="Сапсан 2-24M"?>
-		<?define AppInternalName="M24"?>
+		<?define AppShortName="Сапсан 2-10M"?>
+		<?define AppInternalName="M10"?>
 		<?define AppDirectory="APPLICATIONFOLDER"?>
-		<?define AppDescription="Сапсан 2-24М для проведения поверки, испытаний и контроля метрологических характеристик измерителей скорости, имеющих рабочую частоту 24.50-24.55 ГГц."?>
+		<?define AppDescription="Сапсан 2-10М для проведения поверки, испытаний и контроля метрологических характеристик измерителей скорости, имеющих рабочую частоту 10.50-10.55 ГГц."?>
 		<!--<?define AppFileName="$(var.AppInternalName).exe"?>-->
-		<?define AppFileName="Sapsan2_24M.exe"?>
+		<?define AppFileName="Sapsan2_10M.exe"?>
 		<?define AppIcon="Product.ico"?>
 		<?define AppFileNameAliases="$(var.AppFileName)"?>
 
@@ -38,7 +38,7 @@
 			ConfigurableDirectory="$(var.AppDirectory)"
 		>
 			<ComponentRef	Id="$(var.AppInternalName)" Primary="yes"/>
-			<ComponentRef Id="$(var.AppInternalName).SetInst24.dat"/>
+			<ComponentRef Id="$(var.AppInternalName).SetInst10.dat"/>
 			<?foreach FileExt in $(var.AppFileExts)?>
 			<ComponentGroupRef Id="$(var.ProductInternalName)_$(var.FileExt)FileTypeComponents"/>
 			<?endforeach?>
@@ -50,7 +50,7 @@
 
 			<Component
 				Id="$(var.AppInternalName)"
-				Guid="{D8068A8C-ED06-4062-BE53-0BABDD62C2CA}"
+				Guid="{EE2468D3-4E6B-4543-BD2F-F86C133A0ADD}"
 				Location="either"
 			>
 				<File
@@ -136,13 +136,13 @@
 			</Component>
 
 			<Component
-				Id="$(var.AppInternalName).SetInst24.dat"
-				Guid="{E76F1F1F-DE7E-4A87-9C62-17F4ABA3B508}"
+				Id="$(var.AppInternalName).SetInst10.dat"
+				Guid="{67720D53-D83E-4965-B8F9-B993518B1868}"
 				Location="either"
 			>
 				<File
-					Name="setinst24.dat"
-					Source=".\SourceDir\ProgramFiles\$(var.AppInternalName)\setinst24.dat"
+					Name="setinst10.dat"
+					Source=".\SourceDir\ProgramFiles\$(var.AppInternalName)\setinst10.dat"
 					KeyPath="yes"
 					Vital="yes"
 				/>

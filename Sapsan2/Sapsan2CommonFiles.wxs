@@ -24,6 +24,20 @@
 				/>
 			</Component>
 			<?endforeach?>
+
+			<Component
+				Id="Product.ico"
+				Directory="APPLICATIONFOLDER"
+				Location="either"
+			>
+				<File
+					Name="Product.ico"
+					KeyPath="yes"
+					Vital="no"
+					Source=".\Icons\Product.ico"
+				/>
+			</Component>
+
 		</ComponentGroup>
 
 	</Fragment>

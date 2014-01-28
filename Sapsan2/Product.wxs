@@ -30,6 +30,7 @@
 		/>
 
 		<FeatureRef Id="M24" />
+		<FeatureRef Id="M10" />
 
 		<Upgrade Id="$(var.UpgradeCode)">
 			<UpgradeVersion

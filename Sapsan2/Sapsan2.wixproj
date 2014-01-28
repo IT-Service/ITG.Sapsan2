@@ -29,6 +29,9 @@
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Single .msi file|x86' ">
   </PropertyGroup>
   <ItemGroup>
+    <Compile Include="Sapsan2prtFileType.wxs" />
+    <Compile Include="Sapsan2-10M.wxs" />
+    <Compile Include="Sapsan2rhlFileType.wxs" />
     <Compile Include="Sapsan2CommonFiles.wxs" />
     <Compile Include="Pictures.wxs" />
     <Compile Include="Sapsan2-24M.wxs" />
@@ -41,6 +44,7 @@
     <Folder Include="Icons" />
     <Folder Include="SourceDir\ProgramFiles" />
     <Folder Include="SourceDir\ProgramFiles\M24" />
+    <Folder Include="SourceDir\ProgramFiles\M10" />
     <Folder Include="SourceDir\ProgramFiles\Pictures" />
     <Folder Include="SourceDir\System32" />
   </ItemGroup>
