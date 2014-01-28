@@ -17,7 +17,7 @@
 		<?define AppDirectoryName="24M"?>
 		<?define AppDescription="Сапсан 2-24М для проведения поверки, испытаний и контроля метрологических характеристик измерителей скорости, имеющих рабочую частоту 24.50-24.55 ГГц."?>
 		<!--<?define AppFileName="$(var.AppInternalName).exe"?>-->
-		<?define AppFileName="Stend.exe"?>
+		<?define AppFileName="Sapsan2_24M.exe"?>
 		<?define AppIcon="Product.ico"?>
 		<?define AppFileNameAliases="$(var.AppFileName)"?>
 
@@ -137,10 +137,6 @@
 							Default="yes"
 							Advertise="yes"
 						/>
-						<Verb
-							Id="open"
-							Argument='"%1"'
-						/>
 					</Extension>
 				</ProgId>
 				<ProgId
@@ -158,10 +154,6 @@
 							Default="yes"
 							Advertise="yes"
 						/>
-						<Verb
-							Id="open"
-							Argument='"%1"'
-						/>
 					</Extension>
 				</ProgId>
 
@@ -173,6 +165,7 @@
 					ForceDeleteOnUninstall="yes"
 				>
 					<PermissionEx Sddl="$(var.AppRegKeySddl)"/>
+					<!--<RegistryValue Name="PerceivedType" Type="string" Value="text"/>-->
 				</RegistryKey>
 				<?endforeach?>
 
@@ -251,14 +244,14 @@
 					<!--!!! http://windowssucks.wordpress.com/file-type-registration/ -->
 					<!--<RegistryValue Name="InfoTip" Type="string" Value="" />-->
 					<!--<RegistryValue Name="TileInfo" Type="string" Value="" />-->
-					<!--<RegistryValue Name="NoOpen" Type="string" Value="Сообщение для NoOpen диалога" />-->
+					<RegistryValue Name="NoOpen" Type="string" Value="" />
 					<RegistryValue Name="NoOpenWith" Type="string" Value="" />
 					<!--<RegistryValue Name="NoPreviousVersions" Type="string" Value="" />-->
-					<!--<RegistryValue Name="NoJumpListPathTooltip" Type="string" Value="" />-->
-					<!--<RegistryValue Name="NoRecentDocs" Type="string" Value="" />-->
+					<RegistryValue Name="NoJumpListPathTooltip" Type="string" Value="" />
+					<RegistryValue Name="NoRecentDocs" Type="string" Value="" />
 					<!--<RegistryValue Name="NeverShowExt" Type="string" Value="" />-->
 					<!--<RegistryValue Name="NoSendTo" Type="string" Value="" />-->
-					<!--<RegistryValue Name="DownloadInvokeDisabled" Type="string" Value="" />-->
+					<RegistryValue Name="DownloadInvokeDisabled" Type="string" Value="" />
 					<!-- http://msdn.microsoft.com/en-us/library/windows/desktop/cc144152#fa_attributes -->
 					<!--<RegistryValue Name="AllowSilentDefaultTakeOver" Type="string" Value="" />-->
 					<RegistryValue Name="AppUserModelID " Type="string" Value="$(var.AppProgId)" />
@@ -266,12 +259,6 @@
 					<!-- http://msdn.microsoft.com/en-us/library/windows/desktop/hh127468 -->
 					<!--<RegistryValue Name="ContentViewModeForBrowse " Type="string" Value="" />-->
 
-					<RegistryKey Key="shell">
-						<RegistryKey Key="open">
-							<!-- http://msdn.microsoft.com/en-us/library/windows/desktop/cc144171#dynamic_behavior -->
-							<RegistryValue Name="MultiSelectModel" Type="string" Value="Document"/>
-						</RegistryKey>
-					</RegistryKey>
 					<PermissionEx Sddl="$(var.AppRegKeySddl)"/>
 					<RegistryKey
 						Key="DefaultIcon"
@@ -299,14 +286,14 @@
 					<!--!!! http://windowssucks.wordpress.com/file-type-registration/ -->
 					<!--<RegistryValue Name="InfoTip" Type="string" Value="" />-->
 					<!--<RegistryValue Name="TileInfo" Type="string" Value="" />-->
-					<!--<RegistryValue Name="NoOpen" Type="string" Value="Сообщение для NoOpen диалога" />-->
+					<RegistryValue Name="NoOpen" Type="string" Value="" />
 					<RegistryValue Name="NoOpenWith" Type="string" Value="" />
 					<!--<RegistryValue Name="NoPreviousVersions" Type="string" Value="" />-->
-					<!--<RegistryValue Name="NoJumpListPathTooltip" Type="string" Value="" />-->
-					<!--<RegistryValue Name="NoRecentDocs" Type="string" Value="" />-->
+					<RegistryValue Name="NoJumpListPathTooltip" Type="string" Value="" />
+					<RegistryValue Name="NoRecentDocs" Type="string" Value="" />
 					<!--<RegistryValue Name="NeverShowExt" Type="string" Value="" />-->
 					<!--<RegistryValue Name="NoSendTo" Type="string" Value="" />-->
-					<!--<RegistryValue Name="DownloadInvokeDisabled" Type="string" Value="" />-->
+					<RegistryValue Name="DownloadInvokeDisabled" Type="string" Value="" />
 					<!-- http://msdn.microsoft.com/en-us/library/windows/desktop/cc144152#fa_attributes -->
 					<!--<RegistryValue Name="AllowSilentDefaultTakeOver" Type="string" Value="" />-->
 					<RegistryValue Name="AppUserModelID " Type="string" Value="prtfile" />
@@ -314,34 +301,12 @@
 					<!-- http://msdn.microsoft.com/en-us/library/windows/desktop/hh127468 -->
 					<!--<RegistryValue Name="ContentViewModeForBrowse " Type="string" Value="" />-->
 
-					<RegistryKey Key="shell">
-						<RegistryKey Key="open">
-							<!-- http://msdn.microsoft.com/en-us/library/windows/desktop/cc144171#dynamic_behavior -->
-							<RegistryValue Name="MultiSelectModel" Type="string" Value="Document"/>
-						</RegistryKey>
-					</RegistryKey>
 					<PermissionEx Sddl="$(var.AppRegKeySddl)"/>
 					<RegistryKey
 						Key="DefaultIcon"
 						ForceCreateOnInstall="yes"
 					>
 						<PermissionEx Sddl="$(var.AppRegKeySddl)"/>
-					</RegistryKey>
-				</RegistryKey>
-
-				<RegistryKey
-					Root="HKCR"
-					Key=".$(var.AppFileExt)"
-				>
-					<RegistryKey Key="$(var.AppProgId)">
-						<RegistryKey Key="ShellNew">
-							<!-- http://msdn.microsoft.com/en-us/library/windows/desktop/cc144101(v=vs.85).aspx -->
-							<RegistryValue Name="NullFile" Type="string" Value="" />
-							<!--<RegistryValue Name="FileName" Type="string" Value="[#template.$(var.AppFileExt)]" KeyPath="yes" />-->
-							<RegistryKey Key="Config">
-								<RegistryValue Name="AllDrives" Type="string" Value="" />
-							</RegistryKey>
-						</RegistryKey>
 					</RegistryKey>
 				</RegistryKey>
 

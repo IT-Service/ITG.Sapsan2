@@ -129,7 +129,7 @@
     <Content Include="SourceDir\ProgramFiles\24M\protocol.lst" />
     <Content Include="SourceDir\ProgramFiles\24M\setinst24.dat" />
     <Content Include="SourceDir\ProgramFiles\24M\start.bmp" />
-    <Content Include="SourceDir\ProgramFiles\24M\Stend.exe" />
+    <Content Include="SourceDir\ProgramFiles\24M\Sapsan2_24M.exe" />
     <Content Include="SourceDir\ProgramFiles\24M\stop.bmp" />
     <Content Include="SourceDir\ProgramFiles\24M\yy.bmp" />
   </ItemGroup>
