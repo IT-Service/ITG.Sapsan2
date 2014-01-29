@@ -10,11 +10,13 @@
 	<?define OldPackageUninstallAction="UninstallOriginal$(var.OldPackageId)Package"?>
 	<?endif?>
 	<?ifndef OldPackageUninstallerArgs?>
-	<?define OldPackageUninstallerArgs="/SILENT /NORESTART /SUPPRESSMSGBOXES /LOG"?>
+	<?define OldPackageUninstallerArgs="/SILENT /NORESTART /SUPPRESSMSGBOXES"?>
 	<?endif?>
 	<?ifndef OldPackageUninstallerFileName?>
 	<?define OldPackageUninstallerFileName="unins000.exe"?>
 	<?endif?>
+
+	<?define OldPackageUninstallActionCondition="($(var.OldPackageProperty)) AND (NOT REMOVE) AND (NOT DONTUNINSTALLORIGINALPACKAGE)"?>
 
 	<Property Id="$(var.OldPackageProperty)">
 		<?ifdef OldPackageUninstallerFileName?>
@@ -48,26 +50,38 @@
 		Return="check"
 	/>
 
+	<PropertyRef Id="DONTUNINSTALLORIGINALPACKAGE"/>
+	
 	<InstallExecuteSequence>
 		<Custom
 			Action="$(var.OldPackageUninstallAction)"
 			After="InstallInitialize"
-		><![CDATA[$(var.OldPackageProperty) AND NOT REMOVE]]></Custom>
+		><![CDATA[$(var.OldPackageUninstallActionCondition)]]></Custom>
 	</InstallExecuteSequence>
 
-	<!--<Property Id="ORIGINAL(var.OldPackageId)PACKAGEDIR">
-		<RegistrySearch
-			Id="Original(var.OldPackageId)PackageDir"
-			Root="HKLM"
-			Key="SOFTWARE\Microsoft\Windows\CurrentVersion\Uninstall\(var.OldPackageUninstallerId)"
-			Name="Inno Setup: App Path"
-			Type="directory"
-		>
-			<DirectorySearch
-				Id="Original(var.OldPackageId)PackageDir"
-				AssignToProperty="yes"
-			/>
-		</RegistrySearch>
-	</Property>-->
+	<?ifdef OldPackageUninstallerPause?>
+		<!-- для Inno Setup требуется пауза между деинсталляторами. Вставляем паузу. -->
+
+	<CustomAction
+		Id="SleepAfter$(var.OldPackageUninstallAction)"
+		Script="jscript"
+		Impersonate="no"
+		Execute="deferred"
+		Return="ignore"
+	>
+		<![CDATA[
+			var wshShell = new ActiveXObject( "WScript.Shell" );
+			wshShell.Run( "\"%COMSPEC%\" /c ping -n $(var.OldPackageUninstallerPause) localhost ", 0, 1 )
+		]]>
+	</CustomAction>
+
+	<InstallExecuteSequence>
+		<Custom
+			Action="SleepAfter$(var.OldPackageUninstallAction)"
+			After="$(var.OldPackageUninstallAction)"
+		><![CDATA[$(var.OldPackageUninstallActionCondition)]]></Custom>
+	</InstallExecuteSequence>
+
+	<?endif?>
 
 </Include>
